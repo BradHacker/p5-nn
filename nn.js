@@ -1,5 +1,7 @@
-function NeuralNetwork(numI, numH, numO) {
-  var input_nodes = numI;
-  var hidden_nodes = numH;
-  var output_nodes = numO;
+class NeuralNetwork {
+  constructor(numI, numH, numO) {
+    let input_nodes = numI;
+    let hidden_nodes = numH;
+    let output_nodes = numO;
+  }
 }
