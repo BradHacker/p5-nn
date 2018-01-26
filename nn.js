@@ -45,11 +45,10 @@ class NeuralNetwork {
     //convert array to matrix
     outputs = Matrix.fromArray(outputs);
     targets = Matrix.fromArray(targets);
-
+    //calculate output erros
     let output_errors = Matrix.subtract(targets, outputs);
-
+    //calculate hidden layer error
     let who_t = Matrix.transpose(this.weights_ho);
-
     let hidden_errors = Matrix.multiply(who_t, output_errors);
 
     // outputs.print()
