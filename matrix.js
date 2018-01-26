@@ -14,10 +14,20 @@ class Matrix {
 
   static fromArray(arr) {
     let m = new Matrix(arr.length,1);
-    for (let i = 0; i < arr.lenght; i++) {
+    for (let i = 0; i < arr.length; i++) {
       m.data[i][0] = arr[i];
     }
     return m;
+  }
+
+  static subtract(a, b) {
+    let result = new Matrix(a.rows, a.cols);
+    for (let i = 0; i < a.rows; i++) {
+      for (let j = 0; j < a.cols; j++) {
+        result.data[i][j] = a.data[i][j] - b.data[i][j];
+      }
+    }
+    return result;
   }
 
   toArray() {
@@ -94,11 +104,11 @@ class Matrix {
     }
   }
 
-  transpose() {
-    let result = new Matrix(this.cols, this.rows);
+  static transpose(matrix) {
+    let result = new Matrix(matrix.cols, matrix.rows);
     for (let i = 0; i < result.rows; i++) {
       for (let j = 0; j < result.cols; j++) {
-        result.data[i][j] = this.data[j][i];
+        result.data[i][j] = matrix.data[j][i];
       }
     }
     return result;

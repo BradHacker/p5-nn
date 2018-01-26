@@ -20,7 +20,7 @@ class NeuralNetwork {
   }
 
   feedForward(input_array) {
-
+    console.log('feeding forward')
     let inputs = Matrix.fromArray(input_array);
 
     let hidden = Matrix.multiply(this.weights_ih, inputs);
@@ -37,5 +37,23 @@ class NeuralNetwork {
 
     //sending back output
     return output.toArray();
+  }
+
+  train(inputs, targets) {
+    let outputs = this.feedForward(inputs);
+
+    //convert array to matrix
+    outputs = Matrix.fromArray(outputs);
+    targets = Matrix.fromArray(targets);
+
+    let output_errors = Matrix.subtract(targets, outputs);
+
+    let who_t = Matrix.transpose(this.weights_ho);
+
+    let hidden_errors = Matrix.multiply(who_t, output_errors);
+
+    // outputs.print()
+    // targets.print()
+    // error.print()
   }
 }
