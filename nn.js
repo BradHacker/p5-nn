@@ -51,6 +51,7 @@ class NeuralNetwork {
 
   feedForward(input_array) {
     this.fillVals(input_array,this.input_node_list);
+    this.inputs = input_array;
 
     let inputs = Matrix.fromArray(input_array);
 
@@ -69,13 +70,15 @@ class NeuralNetwork {
     output.map(sigmoid);
 
     this.fillVals(output.toArray(),this.output_node_list);
-
+    this.outputs = output.toArray();
     //sending back output
     return output.toArray();
   }
 
   train(inputs, targets) {
     let outputs = this.feedForward(inputs);
+    this.inputs = inputs;
+    this.outputs = outputs;
 
     //convert array to matrix
     outputs = Matrix.fromArray(outputs);
@@ -125,6 +128,7 @@ class NeuralNetwork {
 
   draw() {
     //console.log(this.ih_connections.length)
+    textSize(12);
     for(let i = 0; i < this.ih_connections.length; i++) {
       let connection = this.ih_connections[i];
       //console.log(connection)
@@ -146,6 +150,30 @@ class NeuralNetwork {
     for(let i = 0; i < this.output_node_list.length; i++) {
       let node = this.output_node_list[i];
       node.draw()
+    }
+    if(this.inputs) {
+      let input_message = "";
+      for(let i = 0; i < this.inputs.length; i++) {
+        input_message += this.inputs[i].toFixed(3);
+        if(i !== this.inputs.length - 1) {
+          input_message += " , ";
+        }
+      }
+      rectMode(CENTER);
+      textSize(60/this.inputs.length);
+      text(input_message,width/8-width/2,height/2);
+    }
+    if(this.outputs) {
+      let output_message = "";
+      for(let i = 0; i < this.outputs.length; i++) {
+        output_message += this.outputs[i].toFixed(3);
+        if(i !== this.outputs.length - 1) {
+          output_message += " , ";
+        }
+      }
+      rectMode(CENTER);
+      textSize(60/this.outputs.length);
+      text(output_message,width/2-width/8,height/2);
     }
   }
 

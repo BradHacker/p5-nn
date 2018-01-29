@@ -3,18 +3,18 @@ let buttons = [];
 
 function setup() {
   createCanvas(windowWidth,windowHeight);
-  // let inputs = [[1,0],[0,1]];
-  // let targets = [[1,0],[0,1]];
-  nn = new NeuralNetwork(2, 3, 2);
-  // // let inputs = [[1],[0]];
-  // // let targets = [[1],[0]];
+  let inputs = [[1,0],[0,1],[1,1],[0,0]];
+  let targets = [[1,0],[0,1],[1,1],[0,0]];
+  nn = new NeuralNetwork(2, 5, 2);
+  // let inputs = [[1],[0]];
+  // let targets = [[0],[1]];
   // //let output = nn.feedForward(input);
-  // for(let a = 0; a < 10; a++) {
-  //   for(let i = 0; i < inputs.length; i++) {
-  //     nn.train(inputs[i], targets[i]);
-  //   }
-  // }
-  let trial = [1,0]
+  for(let a = 0; a < 100000; a++) {
+    for(let i = 0; i < inputs.length; i++) {
+      nn.train(inputs[i], targets[i]);
+    }
+  }
+  let trial = [1]
   // let output = nn.feedForward(trial)
   // console.log(trial)
   // console.log(output)
@@ -38,6 +38,7 @@ function draw() {
 
 function mouseClicked() {
   buttons.map((button) => {
+    //button.ins = [floor(random(0,2)),floor(random(0,2))]
     button.ins = [floor(random(0,2)),floor(random(0,2))]
     button.checkClick()
   })
