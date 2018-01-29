@@ -69,7 +69,7 @@ class Matrix {
 
   static multiply(m1, m2) {
     if(m1.cols !== m2.rows) {
-      Console.log("m1's columns need to be equal to m2's rows.");
+      console.log("m1's columns need to be equal to m2's rows.");
       return undefined;
     }
 
