@@ -51,7 +51,7 @@ class NeuralNetwork {
 
   feedForward(input_array) {
     this.fillVals(input_array,this.input_node_list);
-    this.inputs = input_array;
+    this.ins = input_array;
 
     let inputs = Matrix.fromArray(input_array);
 
@@ -76,8 +76,9 @@ class NeuralNetwork {
   }
 
   train(inputs, targets) {
+    //console.log(inputs)
     let outputs = this.feedForward(inputs);
-    this.inputs = inputs;
+    this.ins = inputs;
     this.outputs = outputs;
 
     //convert array to matrix
@@ -115,9 +116,10 @@ class NeuralNetwork {
       sum += bias.data[i][0];
       sums.push(sum);
     }
-    // console.log(sums);
+    //console.log(sums);
     for (let i = 0; i < weights.rows; i++) {
       let sum = sums[i]
+      //console.log(errors.data[i][0])
       for (let j = 0; j < weights.cols; j++) {
         let percent_error = weights.data[i][j] / sum;
         let nudge_val = percent_error * errors.data[i][0] * this.learning_constant;
@@ -151,16 +153,16 @@ class NeuralNetwork {
       let node = this.output_node_list[i];
       node.draw()
     }
-    if(this.inputs) {
+    if(this.ins) {
       let input_message = "";
-      for(let i = 0; i < this.inputs.length; i++) {
-        input_message += this.inputs[i].toFixed(3);
-        if(i !== this.inputs.length - 1) {
+      for(let i = 0; i < this.ins.length; i++) {
+        input_message += this.ins[i].toFixed(3);
+        if(i !== this.ins.length - 1) {
           input_message += " , ";
         }
       }
       rectMode(CENTER);
-      textSize(60/this.inputs.length);
+      textSize(60/this.ins.length);
       text(input_message,width/8-width/2,height/2);
     }
     if(this.outputs) {
