@@ -44,6 +44,7 @@ class Button {
           this.nn.train(input,[output])
           return;
         case ("Auto Train (" + this.autotrain_val + " sims)"):
+          //console.log("skfh")
           this.nn()
           return;
         default:

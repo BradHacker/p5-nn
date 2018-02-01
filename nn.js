@@ -39,12 +39,12 @@ class NeuralNetwork {
 
     for(let i = 0; i < this.hidden_node_list.length; i++) {
       for(let j = 0; j < this.input_node_list.length; j++) {
-        this.ih_connections.push(new Connection(this.hidden_node_list[i].x,this.hidden_node_list[i].y,this.input_node_list[j].x,this.input_node_list[j].y,this.weights_ih.data[i][j]));
+        this.ih_connections.push(new Connection(this.hidden_node_list[i].x,this.hidden_node_list[i].y,this.input_node_list[j].x,this.input_node_list[j].y,this.weights_ih.data[i][j],i,j));
       }
     }
     for(let i = 0; i < this.output_node_list.length; i++) {
       for(let j = 0; j < this.hidden_node_list.length; j++) {
-        this.ho_connections.push(new Connection(this.output_node_list[i].x,this.output_node_list[i].y,this.hidden_node_list[j].x,this.hidden_node_list[j].y,this.weights_ho.data[i][j]));
+        this.ho_connections.push(new Connection(this.output_node_list[i].x,this.output_node_list[i].y,this.hidden_node_list[j].x,this.hidden_node_list[j].y,this.weights_ho.data[i][j],i,j));
       }
     }
   }
@@ -86,6 +86,8 @@ class NeuralNetwork {
     targets = Matrix.fromArray(targets);
     //calculate output erros
     let output_errors = Matrix.subtract(targets, outputs);
+    console.log('Output Errors')
+    output_errors.print()
     //calculate hidden layer error
     let who_t = Matrix.transpose(this.weights_ho);
     let hidden_errors = Matrix.multiply(who_t, output_errors);
@@ -183,6 +185,12 @@ class NeuralNetwork {
     for(let i = 0; i < node_array.length; i++) {
       node_array[i].value = vals[i];
     }
+    this.ih_connections.map((con) => {
+      con.value = this.weights_ih.data[con.i][con.j]
+    })
+    this.ho_connections.map((con) => {
+      con.value = this.weights_ho.data[con.i][con.j]
+    })
     draw();
   }
 }

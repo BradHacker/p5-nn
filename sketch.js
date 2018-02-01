@@ -4,6 +4,8 @@ let num_sims_box;
 let auto_train_button;
 let autoTrainAmount = 0;
 let autoTrain_progressText = "Auto Train Not Started."
+let totalTrainings = 0;
+let totalTrainings_text_a = 0;
 
 function setup() {
   createCanvas(windowWidth,windowHeight-50);
@@ -34,7 +36,9 @@ function draw() {
   background(200)
   rectMode(CENTER);
   textSize(30)
-  text(autoTrain_progressText,width/2,50)
+  text(autoTrain_progressText,width/2,50);
+  textSize(15);
+  text("Total Trainings: " + totalTrainings_text_a,width/2,100);
   translate(windowWidth/2,0);
   nn.draw();
   buttons.map((button) => {
@@ -73,17 +77,33 @@ function autoTrain() {
     let secs = totalTime % 60;
     time_text = mins + "mins " + secs + "secs"
   }
-  autoTrain_progressText = "Auto Train Completed " + autoTrainAmount + " sims in ~" + time_text;
+  autoTrain_progressText = "Auto Train Completed " + autoTrainAmount_text_a + " sims in ~" + time_text;
+  totalTrainings += autoTrainAmount;
+  totalTrainings_text_a = totalTrainings.toString().split("");
+  totalTrainings_text_a = totalTrainings_text_a.reverse();
+  if(totalTrainings_text_a.length > 3) {
+    for(let i = 3; i < totalTrainings_text_a.length; i += 4) {
+      totalTrainings_text_a.splice(i,0,",");
+    }
+  }
+  totalTrainings_text_a = totalTrainings_text_a.reverse();
+  totalTrainings_text_a = totalTrainings_text_a.join("");
+  //console.log(totalTrainings_text_a)
 }
 
 function setAutoTrain() {
-  autoTrainAmount = num_sims_box.value();
+  autoTrainAmount = parseInt(num_sims_box.value());
   autoTrainAmount_text_a = autoTrainAmount.toString().split("");
   autoTrainAmount_text_a = autoTrainAmount_text_a.reverse();
-  for(let i = 1; i <= floor(autoTrainAmount_text_a.length/4); i++) {
-
+  if(autoTrainAmount_text_a.length > 3) {
+    for(let i = 3; i < autoTrainAmount_text_a.length; i += 4) {
+      autoTrainAmount_text_a.splice(i,0,",");
+    }
   }
-  buttons[2].text = "Auto Train ("  + autoTrainAmount + " sims)";
-  buttons[2].autotrain_val = autoTrainAmount;
+  autoTrainAmount_text_a = autoTrainAmount_text_a.reverse();
+  autoTrainAmount_text_a = autoTrainAmount_text_a.join("");
+  console.log(autoTrainAmount_text_a)
+  buttons[2].text = "Auto Train ("  + autoTrainAmount_text_a + " sims)";
+  buttons[2].autotrain_val = autoTrainAmount_text_a;
   //console.log(autoTrainAmount)
 }

@@ -1,5 +1,5 @@
 class Connection {
-  constructor(x1,y1,x2,y2,val) {
+  constructor(x1,y1,x2,y2,val,i,j) {
     this.x1 = x1;
     this.y1 = y1;
     this.x2 = x2;
@@ -9,6 +9,9 @@ class Connection {
     this.y_dist = this.y1 - this.y2;
 
     this.value = val;
+
+    this.i = i;
+    this.j = j;
   }
 
   draw() {
