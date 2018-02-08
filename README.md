@@ -11,7 +11,7 @@ file:///path/to/repository/parent/folder/p5-nn/index.html
 
 ## Switching Versions
 
-To switch between the graphic or non-graphic version you must edit the [`sketch.js`](../sketch.js) file. You must change the variable on line one of the file.
+To switch between the graphic or non-graphic version you must edit the [`sketch.js`](sketch.js) file. You must change the variable on line one of the file.
 
 #### For Console
 ```Javascript
