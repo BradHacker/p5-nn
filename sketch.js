@@ -1,5 +1,5 @@
 // Set to true if you want GUI
-let graphic = false;
+let graphic = true;
 // Amount of trainings, only used in console mode
 let trainingAmount = 100000;
 

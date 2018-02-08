@@ -50,7 +50,7 @@ function gui_setup() {
 }
 
 // Flag data to be saved
-enableSaveRequest() {
+function enableSaveRequest() {
   if(!saveRequest) {
     saveRequest = true;
   }
@@ -60,7 +60,7 @@ enableSaveRequest() {
 function gui_draw() {
   // If data is flagged to be saved, save data and unflag
   if (saveRequest) {
-    saveCanvas('img-' + nf(frameCount, 4), 'png');
+    saveJSON(nn);
     saveRequest = false;
   }
 
