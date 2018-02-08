@@ -2,8 +2,14 @@ function sigmoid(x) {
   return 1 / (1 + Math.exp(-x));
 }
 
+function dsigmoid(y) {
+  return y * (1 - y);
+}
+
 class NeuralNetwork {
-  constructor(numI, numH, numO) {
+  constructor(numI, numH, numO, graphic) {
+    this.graphic = graphic;
+
     this.input_nodes = numI;
     this.hidden_nodes = numH;
     this.output_nodes = numO;
@@ -18,40 +24,44 @@ class NeuralNetwork {
     this.bias_h.randomize();
     this.bias_o.randomize();
 
-    this.learning_constant = 0.5;
+    this.learning_constant = 0.1;
 
-    this.input_node_list = [];
-    this.hidden_node_list = [];
-    this.output_node_list = [];
+    if(this.graphic) {
+      this.input_node_list = [];
+      this.hidden_node_list = [];
+      this.output_node_list = [];
 
-    this.ih_connections = [];
-    this.ho_connections = [];
+      this.ih_connections = [];
+      this.ho_connections = [];
 
-    for(let i = 0; i < this.input_nodes; i++) {
-      this.input_node_list.push(new Node(-1,i,this.input_nodes))
-    }
-    for(let i = 0; i < this.hidden_nodes; i++) {
-      this.hidden_node_list.push(new Node(0,i,this.hidden_nodes))
-    }
-    for(let i = 0; i < this.output_nodes; i++) {
-      this.output_node_list.push(new Node(1,i,this.output_nodes))
-    }
-
-    for(let i = 0; i < this.hidden_node_list.length; i++) {
-      for(let j = 0; j < this.input_node_list.length; j++) {
-        this.ih_connections.push(new Connection(this.hidden_node_list[i].x,this.hidden_node_list[i].y,this.input_node_list[j].x,this.input_node_list[j].y,this.weights_ih.data[i][j],i,j));
+      for(let i = 0; i < this.input_nodes; i++) {
+        this.input_node_list.push(new Node(-1,i,this.input_nodes))
       }
-    }
-    for(let i = 0; i < this.output_node_list.length; i++) {
-      for(let j = 0; j < this.hidden_node_list.length; j++) {
-        this.ho_connections.push(new Connection(this.output_node_list[i].x,this.output_node_list[i].y,this.hidden_node_list[j].x,this.hidden_node_list[j].y,this.weights_ho.data[i][j],i,j));
+      for(let i = 0; i < this.hidden_nodes; i++) {
+        this.hidden_node_list.push(new Node(0,i,this.hidden_nodes))
+      }
+      for(let i = 0; i < this.output_nodes; i++) {
+        this.output_node_list.push(new Node(1,i,this.output_nodes))
+      }
+
+      for(let i = 0; i < this.hidden_node_list.length; i++) {
+        for(let j = 0; j < this.input_node_list.length; j++) {
+          this.ih_connections.push(new Connection(this.hidden_node_list[i].x,this.hidden_node_list[i].y,this.input_node_list[j].x,this.input_node_list[j].y,this.weights_ih.data[i][j],i,j));
+        }
+      }
+      for(let i = 0; i < this.output_node_list.length; i++) {
+        for(let j = 0; j < this.hidden_node_list.length; j++) {
+          this.ho_connections.push(new Connection(this.output_node_list[i].x,this.output_node_list[i].y,this.hidden_node_list[j].x,this.hidden_node_list[j].y,this.weights_ho.data[i][j],i,j));
+        }
       }
     }
   }
 
   feedForward(input_array) {
-    this.fillVals(input_array,this.input_node_list);
-    this.ins = input_array;
+    if(this.graphic) {
+      this.fillVals(input_array,this.input_node_list);
+      this.ins = input_array;
+    }
 
     let inputs = Matrix.fromArray(input_array);
 
@@ -61,7 +71,9 @@ class NeuralNetwork {
     //activation function
     hidden.map(sigmoid);
 
-    this.fillVals(hidden.toArray(),this.hidden_node_list);
+    if(this.graphic) {
+      this.fillVals(hidden.toArray(),this.hidden_node_list);
+    }
 
     //generating final output
     let output = Matrix.multiply(this.weights_ho, hidden);
@@ -69,66 +81,117 @@ class NeuralNetwork {
     output.add(this.bias_o);
     output.map(sigmoid);
 
-    this.fillVals(output.toArray(),this.output_node_list);
-    this.outputs = output.toArray();
+    if(this.graphic) {
+      this.fillVals(output.toArray(),this.output_node_list);
+      this.outputs = output.toArray();
+    }
     //sending back output
     return output.toArray();
   }
 
-  train(inputs, targets) {
+  train(input_array, target_array) {
     //console.log(inputs)
-    let outputs = this.feedForward(inputs);
-    this.ins = inputs;
-    this.outputs = outputs;
+    if(this.graphic) {
+      this.fillVals(input_array,this.input_node_list);
+      this.ins = input_array;
+    }
+
+    let inputs = Matrix.fromArray(input_array);
+
+    let hidden = Matrix.multiply(this.weights_ih, inputs);
+    //add bias
+    hidden.add(this.bias_h);
+    //activation function
+    hidden.map(sigmoid);
+
+    if(this.graphic) {
+      this.fillVals(hidden.toArray(),this.hidden_node_list);
+    }
+
+    //generating final output
+    let outputs = Matrix.multiply(this.weights_ho, hidden);
+    //add bias
+    outputs.add(this.bias_o);
+    outputs.map(sigmoid);
+    //outputs.print();
+
+    if(this.graphic) {
+      this.fillVals(outputs.toArray(),this.output_node_list);
+      this.outputs = outputs.toArray();
+    }
+
 
     //convert array to matrix
-    outputs = Matrix.fromArray(outputs);
-    targets = Matrix.fromArray(targets);
-    //calculate output erros
+    //outputs = Matrix.fromArray(outputs);
+    //outputs.print();
+    let targets = Matrix.fromArray(target_array);
+    //calculate output errors
     let output_errors = Matrix.subtract(targets, outputs);
-    console.log('Output Errors')
-    output_errors.print()
+    // console.log('Output Errors')
+    //output_errors.print()
+
+    //Calculate gradient
+    let gradients = Matrix.map(outputs, dsigmoid);
+    gradients.multiply(output_errors);
+    gradients.multiply(this.learning_constant);
+
+
+    //Calculate deltas
+    let hidden_T = Matrix.transpose(hidden);
+    let weight_ho_deltas = Matrix.multiply(gradients, hidden_T);
+
+
+    //Adjust weights with deltas
+    this.weights_ho.add(weight_ho_deltas);
+    //Adjust bias with gradients
+    this.bias_o.add(gradients);
+    //this.weights_ho.print();
+
+
     //calculate hidden layer error
     let who_t = Matrix.transpose(this.weights_ho);
     let hidden_errors = Matrix.multiply(who_t, output_errors);
+    //hidden_errors.print();
 
-    // this.weights_ho.print();
-    this.gradientDescent(hidden_errors,this.weights_ih,this.bias_h);
-    this.gradientDescent(output_errors,this.weights_ho,this.bias_o);
-    // this.weights_ho.print();
-    // console.log("targets")
-    // targets.print()
-    // console.log("inputs")
-    // Matrix.fromArray(inputs).print()
-    // console.log("outputs")
-    // outputs.print()
-    // console.log("output error")
-    // output_errors.print()
-    // console.log("hidden error")
-    // hidden_errors.print()
+    let hidden_gradient = Matrix.map(hidden, dsigmoid);
+    //hidden_gradient.print();
+    hidden_gradient.multiply(hidden_errors);
+    hidden_gradient.multiply(this.learning_constant);
+
+    let inputs_T = Matrix.transpose(inputs);
+    let weight_ih_deltas = Matrix.multiply(hidden_gradient, inputs_T);
+
+    //Adjust weights with deltas
+    this.weights_ih.add(weight_ih_deltas);
+    //Adjust bias with gradient
+    this.bias_h.add(hidden_gradient);
+
+    //this.gradientDescent(hidden_errors,this.weights_ih,this.bias_h);
+    //this.gradientDescent(output_errors,this.weights_ho,this.bias_o);
   }
 
-  gradientDescent(errors, weights, bias) {
-    let sums = [];
-    for (let i = 0; i < weights.rows; i++) {
-      let sum = 0;
-      for (let j = 0; j < weights.cols; j++) {
-        sum += Math.abs(weights.data[i][j]);
-      }
-      sum += bias.data[i][0];
-      sums.push(sum);
-    }
-    //console.log(sums);
-    for (let i = 0; i < weights.rows; i++) {
-      let sum = sums[i]
-      //console.log(errors.data[i][0])
-      for (let j = 0; j < weights.cols; j++) {
-        let percent_error = weights.data[i][j] / sum;
-        let nudge_val = percent_error * errors.data[i][0] * this.learning_constant;
-        weights.data[i][j] += nudge_val;
-      }
-    }
-  }
+  //My Gradient descent from scratch
+  // gradientDescent(errors, weights, bias) {
+  //   let sums = [];
+  //   for (let i = 0; i < weights.rows; i++) {
+  //     let sum = 0;
+  //     for (let j = 0; j < weights.cols; j++) {
+  //       sum += Math.abs(weights.data[i][j]);
+  //     }
+  //     sum += bias.data[i][0];
+  //     sums.push(sum);
+  //   }
+  //   //console.log(sums);
+  //   for (let i = 0; i < weights.rows; i++) {
+  //     let sum = sums[i]
+  //     //console.log(errors.data[i][0])
+  //     for (let j = 0; j < weights.cols; j++) {
+  //       let percent_error = weights.data[i][j] / sum;
+  //       let nudge_val = percent_error * errors.data[i][0] * this.learning_constant;
+  //       weights.data[i][j] += nudge_val;
+  //     }
+  //   }
+  // }
 
   draw() {
     //console.log(this.ih_connections.length)
@@ -191,6 +254,6 @@ class NeuralNetwork {
     this.ho_connections.map((con) => {
       con.value = this.weights_ho.data[con.i][con.j]
     })
-    draw();
+    this.draw();
   }
 }
