@@ -1,9 +1,0 @@
-{
-  "name": "p5-nn",
-  "version": "1.0.0",
-  "description": "Neural Network using p5.js",
-  "author": "Bradley Harker",
-  "dependencies": {
-    "fs": "0.0.1-security"
-  }
-}

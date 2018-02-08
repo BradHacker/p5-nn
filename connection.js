@@ -14,10 +14,10 @@ class Connection {
     this.j = j;
   }
 
+  // Display connection between two nodes with weight value
   draw() {
     strokeWeight(4);
     stroke(0);
-    //console.log(0)
     line(this.x1,this.y1,this.x2,this.y2);
     rectMode(CENTER);
     textAlign(CENTER,CENTER);
