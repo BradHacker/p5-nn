@@ -28,6 +28,8 @@ class NeuralNetwork {
 
     this.learning_constant = 0.1;
 
+    this.total_trainings = 0;
+
     // If graphics enabled, create all display objects
     if(this.graphic) {
       this.input_node_list = [];
@@ -239,14 +241,19 @@ class NeuralNetwork {
     }
 
     // Set connection values
+    this.fillConnections();
+
+    // Redraw the Neural Network
+    this.draw();
+  }
+
+  // Set connection values
+  fillConnections() {
     this.ih_connections.map((con) => {
       con.value = this.weights_ih.data[con.i][con.j]
     })
     this.ho_connections.map((con) => {
       con.value = this.weights_ho.data[con.i][con.j]
     })
-
-    // Redraw the Neural Network
-    this.draw();
   }
 }

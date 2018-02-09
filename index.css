@@ -1,3 +1,19 @@
 body {
-  padding: 0;
+  margin:0;
+  margin-left:0;
+  padding:0;
+  overflow: hidden;
+  background-color: rgb(200,200,200);
+}
+
+canvas {
+  margin:auto;
+}
+
+.nn-input {
+  margin: 5px;
+}
+
+.upload-btn {
+  float: right;
 }
