@@ -1,4 +1,17 @@
 # p5.js Neural Network
+
+## Table of Contents
+* [Introduction](#introduction)
+* [Running The Code](#running-the-code)
+* [Switching Versions](#switching-versions)
+  * [For Console](#for-console)
+  * [For GUI](#for-gui)
+* [Console Version](#console-version)
+* [GUI Version](#gui-version)
+  * [Save/Upload Networks](#saveupload-networks)
+  * [Auto Training](#auto-training)
+
+## Introduction
 This is a library I have created for a *single layered* neural network. This was created with the help of [The Coding Train](https://www.youtube.com/channel/UCvjgXvBlbQiydffZU7m1_aw). I have devised this network into two separate parts. The console version which is purely the library and the GUI version which I have developed overtop of the console version. The code when freshly downloaded will default to **console mode**.
 
 ## Running the Code
@@ -39,6 +52,18 @@ By default, when it loads, the neural network will output it's guesses on the fo
 
 ### GUI Version
 The GUI version of this library allows for a more user friendly interface with the neural network. This GUI is still a WIP so keep an eye out for updates.
+
+#### Save/Upload Networks
+The GUI allows you to save the current data from the neural network in the form of a JSON file. You can then upload that network later in order to restore the previous training.
+
+#### Auto Training
+In order to auto train, you must first set the amount of training. Enter the preferred amount of training and click the button to set the amount of auto trainings (WARNING: More than 100,000 simulations may take a long time!!!).
+
+## Changelog
+### v0.1.0 - 02.08.2018
+* Added Changelog
+* Added TOC
+* Updated GUI section of README
 
 ## Credits
 * Bradley Harker - Main Programmer
