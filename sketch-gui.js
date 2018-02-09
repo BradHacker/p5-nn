@@ -46,26 +46,19 @@ function gui_setup() {
 
   // FeedForward Button
   buttons.push(new Button(300,height-50,150,30,nn,training_data,"FeedForward",[220,0,0],0));
-  // Train button
-  buttons.push(new Button(-300,height-50,150,30,nn,training_data,"Train",[0,0,220],0));
   // Auto Train button
   buttons.push(new Button(0,height-50,300,30,autoTrain,null,"Auto Train (0 sims)",[0,220,0],autoTrainAmount));
   //Save Data button
-  buttons.push(new Button(-525,height-50,150,30,enableSaveRequest,null,"Save Data",[0,220,180],0));
+  buttons.push(new Button(-300,height-50,150,30,enableSaveRequest,null,"Save Data",[0,220,180],0));
 }
 
 // This function loads the uploaded file and detirmines if it's a JSON file or not
 function uploadFile(file) {
-  if(file.subtype === "json") {
-    loadJSON(file.data,uploadNetwork);
-  } else {
-    alert("The file must be a JSON file.")
-  }
+  loadJSON(file.data,uploadNetwork);
 }
 
 // This function loads the data from a save Neural Network
 function uploadNetwork(n) {
-  console.log(n)
   nn.graphic = n.graphic;
 
   nn.input_nodes = n.input_nodes;

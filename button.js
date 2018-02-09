@@ -39,10 +39,6 @@ class Button {
           // Generate guess with selected random input
           this.nn.feedForward(d.inputs);
           return;
-        case "Train":
-          // Train using selected random input and target
-          this.nn.train(d.inputs,d.targets);
-          return;
         case ("Auto Train (" + this.autotrain_val + " sims)"):
           // Call autoTrain passed through data parameter
           this.nn()
